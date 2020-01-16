@@ -1,0 +1,86 @@
+// Copyright 2018, M.A.E.
+//
+// Add the following as a user-script (via an extension like https://github.com/violentmonkey/violentmonkey) in order to copy the
+// current webpage and selected text to the clipboard in a format suitable for pasting into an org-mode document.
+// To execute the action, you need to press Alt-L on a webpage, though this can be modified by changing the keycode
+// used in the onkeyup function.
+
+// ==UserScript==
+// @name Copy Org-mode Link
+// @namespace Violentmonkey Scripts
+// @match *://*/*
+// @grant clipboardWrite
+// ==/UserScript==
+
+function main() {
+  console.log('E');
+
+  function copyTextToClipboard(text)
+  {
+      console.log('F');
+
+      var textArea = document.createElement("textarea");
+      textArea.style.position = 'fixed';
+      textArea.style.top = 0;
+      textArea.style.left = 0; 
+      textArea.style.width = '2em'; 
+      textArea.style.height = '2em'; 
+      textArea.style.padding = 0; 
+      textArea.style.border = 'none'; 
+      textArea.style.outline = 'none'; 
+      textArea.style.boxShadow = 'none'; 
+      textArea.style.background = 'transparent'; 
+      textArea.value = text; 
+      document.body.appendChild(textArea); 
+      textArea.select(); 
+      try 
+      { 
+        console.log('G');
+
+        var successful = document.execCommand('copy'); 
+        var msg = successful ? 'successful' : 'unsuccessful'; 
+        console.log('Copying text command was ' + msg);
+      } 
+      catch (err)
+      {
+        console.log('H');
+        console.log('Oops, unable to copy');
+      }
+      console.log('I');
+
+      document.body.removeChild(textArea);
+  };
+  console.log('J');
+
+  var url = encodeURIComponent(location.href);
+  url = url.replace(/%3A/g, ':').replace(/%2F/g, '/');
+  var title = document.title;
+  title = title.replace(/\[/g, '{'); title = title.replace(/\]/g, '}');
+  // see https://unicodelookup.com for unicode values
+  title = title.replace(/[\u2012]/g, "-"); // figure dash
+  title = title.replace(/[\u2013]/g, "-"); // en dash
+  title = title.replace(/[\u2014]/g, "--"); // em dash
+  title = title.replace(/[\u00B7]/g, "-"); // dot
+  title = title.replace(/[\u2019]/g, "'"); // apostrophe
+  console.log('K');
+
+  var sel_text = window.getSelection(); 
+  copyTextToClipboard(sel_text+'\n\n[['+url+']['+title+']]');
+  console.log('Lx');
+
+}
+console.log('A');
+
+// listen for Alt-C key-combination, and then execute
+document.onkeyup=function(e){
+var e = e || window.event; // for IE to cover IEs window object
+  console.log('C');
+
+  if(e.which == 192) {
+    console.log('D');
+
+    main();
+    return false;
+  }
+}
+console.log('B');
