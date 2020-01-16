@@ -6,7 +6,7 @@
 // used in the onkeyup function.
 
 // ==UserScript==
-// @name Copy Org-mode Link
+// @name CopyBBC
 // @namespace Violentmonkey Scripts
 // @match *://*/*
 // @grant clipboardWrite
@@ -15,58 +15,58 @@
 function main() {
   console.log('E');
 
-  function copyTextToClipboard(text)
-  {
+  function copyTextToClipboard(text)
+  {
       console.log('F');
 
-      var textArea = document.createElement("textarea");
-      textArea.style.position = 'fixed';
-      textArea.style.top = 0;
-      textArea.style.left = 0; 
-      textArea.style.width = '2em'; 
-      textArea.style.height = '2em'; 
-      textArea.style.padding = 0; 
-      textArea.style.border = 'none'; 
-      textArea.style.outline = 'none'; 
-      textArea.style.boxShadow = 'none'; 
-      textArea.style.background = 'transparent'; 
-      textArea.value = text; 
-      document.body.appendChild(textArea); 
-      textArea.select(); 
-      try 
-      { 
+      var textArea = document.createElement("textarea");
+      textArea.style.position = 'fixed';
+      textArea.style.top = 0;
+      textArea.style.left = 0; 
+      textArea.style.width = '2em'; 
+      textArea.style.height = '2em'; 
+      textArea.style.padding = 0; 
+      textArea.style.border = 'none'; 
+      textArea.style.outline = 'none'; 
+      textArea.style.boxShadow = 'none'; 
+      textArea.style.background = 'transparent'; 
+      textArea.value = text; 
+      document.body.appendChild(textArea); 
+      textArea.select(); 
+      try 
+      { 
         console.log('G');
 
-        var successful = document.execCommand('copy'); 
-        var msg = successful ? 'successful' : 'unsuccessful'; 
-        console.log('Copying text command was ' + msg);
-      } 
-      catch (err)
-      {
+        var successful = document.execCommand('copy'); 
+        var msg = successful ? 'successful' : 'unsuccessful'; 
+        console.log('Copying text command was ' + msg);
+      } 
+      catch (err)
+      {
         console.log('H');
-        console.log('Oops, unable to copy');
-      }
+        console.log('Oops, unable to copy');
+      }
       console.log('I');
 
-      document.body.removeChild(textArea);
-  };
-  console.log('J');
+      document.body.removeChild(textArea);
+  };
+  console.log('J');
 
-  var url = encodeURIComponent(location.href);
-  url = url.replace(/%3A/g, ':').replace(/%2F/g, '/');
-  var title = document.title;
-  title = title.replace(/\[/g, '{'); title = title.replace(/\]/g, '}');
-  // see https://unicodelookup.com for unicode values
-  title = title.replace(/[\u2012]/g, "-"); // figure dash
-  title = title.replace(/[\u2013]/g, "-"); // en dash
-  title = title.replace(/[\u2014]/g, "--"); // em dash
-  title = title.replace(/[\u00B7]/g, "-"); // dot
-  title = title.replace(/[\u2019]/g, "'"); // apostrophe
+  var url = encodeURIComponent(location.href);
+  url = url.replace(/%3A/g, ':').replace(/%2F/g, '/');
+  var title = document.title;
+  title = title.replace(/\[/g, '{'); title = title.replace(/\]/g, '}');
+  // see https://unicodelookup.com for unicode values
+  title = title.replace(/[\u2012]/g, "-"); // figure dash
+  title = title.replace(/[\u2013]/g, "-"); // en dash
+  title = title.replace(/[\u2014]/g, "--"); // em dash
+  title = title.replace(/[\u00B7]/g, "-"); // dot
+  title = title.replace(/[\u2019]/g, "'"); // apostrophe
   console.log('K');
 
-  var sel_text = window.getSelection(); 
-  copyTextToClipboard(sel_text+'\n\n[['+url+']['+title+']]');
-  console.log('Lx');
+  var sel_text = window.getSelection(); 
+  copyTextToClipboard(sel_text+'\n' +url);
+  console.log('L');
 
 }
 console.log('A');
@@ -76,11 +76,11 @@ document.onkeyup=function(e){
 var e = e || window.event; // for IE to cover IEs window object
   console.log('C');
 
-  if(e.which == 192) {
+  if(e.which == 110) {
     console.log('D');
 
-    main();
-    return false;
-  }
+    main();
+    return false;
+  }
 }
 console.log('B');
